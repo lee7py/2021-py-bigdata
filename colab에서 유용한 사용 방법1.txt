@@ -1,0 +1,87 @@
+----------------------------------------------------------------------------------------------
+# bokeh 지원
+# 다음 후 실행
+
+# colab에서 bokeh 지원
+from bokeh.io import output_notebook
+output_notebook()
+
+----------------------------------------------------------------------------------------------
+colab matplotlib 한글 지원
+
+1. 폰트 설치 후 폰트 재구성
+# 다음은 한번 실행하고 다시 '런타임 다시 시작' 후 다음 셀 실행
+# 새로운 파일마다 이 셀은 실행 필요
+
+# APT(Advanced Packaging Tool)로 폰트 설치 실행
+!apt -qq -y install fonts-nanum
+
+import matplotlib as mpl
+# 폰트 매니저의 메서드로 다시 폰트를 구성
+# 폰트 구성 후 '다시 실행'해야 재설정된 폰트가 반영
+mpl.font_manager._rebuild()
+
+2. 이후 반드시 [런타임/런타임 다시시작(ctr + m .)] 실행 한 후 위 명령은 필요 없이
+
+3. 폰트 지정 후 사용
+
+# 한글 폰트를 선명하도록 하는 파워명령어
+%config InlineBackend.figure_format = 'retina'
+
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+
+# 한글 폰트 지원
+plt.rc('font', family='NanumBarunGothic') 
+# 음수 부호 지원
+mpl.rcParams['axes.unicode_minus'] = False
+
+4. 샘플 출력 
+import numpy as np
+import matplotlib.pyplot as plt
+
+plt.plot(range(-20, 80), np.random.randn(100).cumsum(), 'r--')
+plt.title('한글 점검');
+
+
+----------------------------------------------------------------------------------------------
+# 필요 지역 파일 업로드  
+
+# 파일 업로드
+from google.colab import files
+files.upload()
+
+-------------------------------------------------------------------------------------------------
+# 내 구글 드라이브를 colab 서버에 연결해 필요 파일 참조 방법
+
+1. 
+# 내 구글 드라이브를 colab 서버에 연결
+from google.colab import drive
+drive.mount('/content/drive')
+
+# colab 서버 폴더 /content/drive/ 하부에 나의 구글 서버인 /MyDrive가 연결됨
+
+2. 현재 폴더 확인
+# 현재 서버에서 작업하고 있는 폴더 위치는 /content 하부임 
+!pwd
+
+3. 필요 파일 path 지정해 열기
+# csv 파일 열기
+import pandas as pd
+
+# 읽을 파일이름을 구성
+#    다음은 구글 드라이브 최상의 폴더에 있는 파일인 경우
+#    DOWNLOAD_서울지하철_역별시간별_승하차인원.csv
+fpath='drive/MyDrive/DOWNLOAD_서울지하철_역별시간별_승하차인원.csv'
+
+# 한글 처리를 위해 인코딩 utf-8로 읽기
+df = pd.read_csv(fpath, encoding='utf-8')
+df.head()
+
+
+--------------------------------------------------------------------------------------------
+# 주피터 노트북에서 사용
+# 경고 표시 해제
+
+import warnings
+warnings.filterwarnings('ignore')
